@@ -8,13 +8,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+ffffff
 namespace SigmaVisualSketch
 {
     public partial class Form1 : Form
     {
         public static Int32 userID;
         public String userFullName;
+        public string userRole;
         SqlConnection conn;
         public void setUserID(int id) {
             userID = id;
@@ -159,6 +160,7 @@ namespace SigmaVisualSketch
 
         private void Form1_Load(object sender, EventArgs e)
         {
+           // toolStripSplitButton2.Visible = false;
             conn = DBUtils.GetDBConnection();
             conn.Open();
 
@@ -168,7 +170,14 @@ namespace SigmaVisualSketch
             sda.Fill(dt);
             DataRow drow = dt.Rows[0];
             userFullName = drow.Field<String>("fullName");
-            tsslUserName.Text = userFullName;
+            userRole = drow.Field<String>("type");
+
+            if (userRole == "admin")
+            {
+               // toolStripSplitButton2.Visible = true;
+               // toolStripSplitButton2.Enabled = true;
+            }
+            tsslUserName.Text = userFullName + " " +userRole;
 
            
             createListOfOrders(getDataTableWithAllAvaliblbeOrders(), flpForAllAvalibleOrders, "AllOrders");
@@ -190,6 +199,10 @@ namespace SigmaVisualSketch
             if (tabControl1.SelectedTab == tabPage3)
             {
                 createListOfOrders(getDataTableWithOrdersToExecute(), flpForOrdersToExecute, "MyTakenOrders");
+            }
+            if (tabControl1.SelectedTab == tabPage5)
+            {
+              
             }
         }
 
@@ -218,6 +231,16 @@ namespace SigmaVisualSketch
             login.Show();
           
            
+        }
+
+        private void toolStripSplitButton2_ButtonClick(object sender, EventArgs e)
+        {
+
+        }
+
+        private void createUserToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
